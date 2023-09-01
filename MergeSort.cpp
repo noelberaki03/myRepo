@@ -3,6 +3,9 @@
 
 void merge(std::vector<int> &left, std::vector<int> &right, std::vector<int> &vect);
 
+int binarySearch(std::vector<int> &vect, int &key);
+int binarySearchHelper(std::vector<int> &vect, int &key, int &first, int &last);
+
 void mergeSort(std::vector<int> &vect) {
     if (vect.size() < 2) {
         return;
@@ -51,6 +54,32 @@ void merge(std::vector<int> &left, std::vector<int> &right, std::vector<int> &ve
     }
 }
 
+int binarySearch(std::vector<int> &vect, int &key) {
+    int first = 0;
+    int last = vect.size() - 1;
+    return binarySearchHelper(vect, key, first, last);
+}
+
+int binarySearchHelper(std::vector<int> &vect, int &key, int &first, int &last) {
+    if (first > last) {
+        return -1;
+    }
+    else {
+        int mid = (first + last) / 2;
+        if (vect[mid] == key) {
+            return mid;
+        }
+        else if (vect[mid] > key) {
+            last = mid - 1;
+            return binarySearchHelper(vect, key, first, last);
+        }
+        else {
+            first = mid + 1;
+            return binarySearchHelper(vect, key, first, last);
+        }
+    }
+}
+
 int main() {
     std::vector<int> vect;
     
@@ -65,7 +94,7 @@ int main() {
     vect.push_back(35);
     vect.push_back(20);
 
-    std::cout << "UNSORTED:\n";
+    std::cout << "\n\nUNSORTED:\n";
     for (int i : vect) {
         std::cout << i << " ";
     }
@@ -76,6 +105,17 @@ int main() {
         std::cout << i << " ";
     }
 
-    std::cout << "\n\n";
+    int num;
+    std::cout << "\n\nEnter a number: ";
+    std::cin >> num;
+
+    int index = binarySearch(vect, num);
+
+    if (index >= 0) {
+        std::cout << num << " found at index: " << index << "\n\n\n";
+    }
+    else {
+        std::cout << num << " not in the list.\n\n\n";
+    }
     return 0;
 }
